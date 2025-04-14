@@ -9,7 +9,7 @@ async function fetchPowerAppsData() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                trigger: "page_load" // Adding the required trigger property
+                trigger: "page_load"
             })
         });
 
@@ -19,6 +19,16 @@ async function fetchPowerAppsData() {
 
         const data = await response.json();
         console.log('Data received from Power Apps:', data);
+        
+        // Update the h4 element with the data from A2 field
+        if (data && data.value && data.value.length > 0) {
+            const a2Value = data.value[0].A2; // Assuming A2 is the field name
+            const totalClientsElement = document.getElementById('total-client-num');
+            if (totalClientsElement) {
+                totalClientsElement.textContent = a2Value;
+            }
+        }
+        
         return data;
     } catch (error) {
         console.error('Error fetching data from Power Apps:', error);
@@ -31,8 +41,6 @@ function initializePowerAppsRequest() {
     document.addEventListener('DOMContentLoaded', async () => {
         try {
             const data = await fetchPowerAppsData();
-            // Handle the data here
-            // You can update your UI with the received data
         } catch (error) {
             console.error('Failed to initialize Power Apps request:', error);
         }
