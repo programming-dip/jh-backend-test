@@ -20,13 +20,17 @@ async function fetchPowerAppsData() {
         const data = await response.json();
         console.log('Data received from Power Apps:', data);
         
-        // Update the h4 element with the data from A2 field
-        if (data && data.value && data.value.length > 0) {
-            const a2Value = data.value[0].A2; // Assuming A2 is the field name
+        // Update the h4 element with the Total Client value
+        if (data && data[0] && data[0]["Total Client"]) {
+            const totalClientValue = data[0]["Total Client"];
             const totalClientsElement = document.getElementById('total-client-num');
             if (totalClientsElement) {
-                totalClientsElement.textContent = a2Value;
+                totalClientsElement.textContent = totalClientValue;
+            } else {
+                console.error('Element with ID total-client-num not found');
             }
+        } else {
+            console.error('Data structure is not as expected:', data);
         }
         
         return data;
